@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  axon:
+    image: axoniq/axonserver
+    container_name: axon
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+    networks:
+        - driver
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: driver
+    restart: always
+    depends_on:
+      - axon
+    ports:
+        - "9805:9805"
+    networks:
+      - driver
+
+networks:
+  driver:
+    name: driver
